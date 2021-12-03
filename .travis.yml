@@ -6,28 +6,21 @@ before_install:
 - docker build -t mehul2205/multi-react-test -f ./client/Dockerfile.dev ./client
 script:
 - docker run -e CI=true mehul2205/multi-react-test npm run test
-
 after_success:
-  - docker build -t mehul2205/multi-client ./client
-  - docker build -t mehul2205/multi-nginx ./nginx
-  - docker build -t mehul2205/multi-server ./server
-  - docker build -t mehul2205/multi-worker ./worker
-
-  #login into docker
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
-  #Docker image push
-
-  - docker push mehul2205/multi-client
-  - docker push mehul2205/multi-nginx
-  - docker push mehul2205/multi-server
-  - docker push mehul2205/multi-worker
-
+- docker build -t mehul2205/multi-client ./client
+- docker build -t mehul2205/multi-nginx ./nginx
+- docker build -t mehul2205/multi-server ./server
+- docker build -t mehul2205/multi-worker ./worker
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+- docker push mehul2205/multi-client
+- docker push mehul2205/multi-nginx
+- docker push mehul2205/multi-server
+- docker push mehul2205/multi-worker
 deploy:
   provider: heroku
   api_key:
-    secure: lZ4HslG/W6DE2yZjDP2Yl6w7HAj10LuYubI4XXrueIOZRdeOwwDq8hIR2XmQ9Nxjro9gXiFaXLo7+4I0k8+HzpLsH/aFu7WmxjWYTxyYcIi5HGcgQ6beeAXcqUiLzYyNQjAhIp/7q73fIxkaDeFM3YHADDyMT6JAKTc6i4COLco9AnuuCUXHRTpYBscTRzSM7imcP9cxoLnT4mwY7P7XIGgB3OEJdIXv5cOyUTSzlMWrr3PIpv9wtmscg1oFixamjgPuth5jg54sDDB6y6v4k8wiBM/Bqq2pf9Itb3vUgbGm2/gR1BGO7qaVfTIDymtD18p97bthiGImohzq58Xnaf51CeU3qQY2RaKVtgSnvf4if8/UUQ4135fGiX7bekUOqER59ebUsxxLapXqJNTy7sez49vnj804T7uXwMPa/hiJJr/ECiokZ8o1T1yrYUPGN+sRHShVf4LILUewOdAUtEbu8Gbx19bm03djdj5WbRxlnptwzEJXS54c1Mh6DV/CquMiNFgeP0ZTRjfm5bIjUNOwNd1GB8CaIZi+r3UM2F7mduzDauMR1IeiRmMepa2a0Ovi2K/ObFTdH90SOmsyyltlsAUAsIJA0c8G5T8dH1f/tP2/5YS/kgbJcRMt+P+mVMVWcq14sQxZU70C9DQQSUeeuceaVHpg8Fp7ESG7Xmc=
-  app: mehul2205-react-app-docker
+    secure: j41MNPlX7pqe5WB0RweAHcgfQWplkcjGesN+s5qcfQpn755ObY4ZrFcqeG4rG7a2rOtu7bzl71e5GlVAkQQ50qGbd5qQLlLVAx7lXc719XqZ76NGSXaV/6XBAOY1P/BZpA+QPfEHwq7cxUW1XBPeBgueNnzFyDoT4wss0LcslPKnqDX+VUoaG2oDIYsm+SndZ4pKuXE/QVyVNO48azJQibZDOnWXHUvYgJ4+uDDmsajy5ysSxg9C+lKEFDgR2Oy64p2aJYWJZjEFen0g5JsYwZjFB7gYrAspRZ0NsDTSyrId/zpuLGOEsjuR5jtDLGgSxftISvLt36xF90hHRaRbT/r8sGai4Hjt2hqvf3bGCfzwSOBFisy9sGF7d/vS41MQP4cgwdyvZNVctzF82bMWrnf1E0/OxLKrsoBDsNLbguGt9GIFCvKmTs6ax156ogLCboK+R7pw+yt9aph2Yv+XHI8sKdvbtfq9tiXdO3v5NQ8FkHCZb7wk3d59kymOz2Dsi5LnTHFivXk3F2LQzGd8FJyBOj8MUtYaHNakGlex+8cqAngRPRqDOSdaLXNRKGNhhCyzvG8PiRlL7YH9bLsu/hbh5UQXdGTm58ZOcDX+4fjgWu0joEljOhvYoou2B/q4Nse06kxz19u5dZzqniiviXgShzUPgoWrFfmlSv7YJLY=
+  app: mehul2205-multi-container
   skip_cleanup: true
   on:
     branch: master
